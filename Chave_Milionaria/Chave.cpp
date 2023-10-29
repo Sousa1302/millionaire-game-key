@@ -2,7 +2,7 @@
 #include <ctime>  // Para gerar numeros diferentes cada vez que executamos o codigo
 #include <cstdlib>
 #include <vector>  // Para usar vetores
-#include <algorithm>  // Para usar a função std::find
+#include <algorithm>  // Para usar a função std::find nos vetores
 
 using namespace std;
 
@@ -31,7 +31,7 @@ void GerarChavesEstrelas(){
         if (Num_Unico(Num_12, Chaves_12)) {
             Chaves_12.push_back(Num_12);
             
-            // esta a iteragindo com o elemento do vetor Chaves_12 num indice especifico neste caso o Times_printed_12, se times_printed_12 = 0 o valor gerado sera atribuido á gaveta 0
+            // esta iteragindo com o elemento do vetor Chaves_12 num indice especifico neste caso o Times_printed_12, se times_printed_12 = 0 o valor gerado sera atribuido á gaveta 0
             cout << Chaves_12[Times_printed_12] << " ";
             Times_printed_12++;
         }
@@ -66,8 +66,7 @@ int main() {
     if (Another_group >= 2){
         cout << "Estas foram as Chaves milionários geradas, obrigado por jogares!\n";
     }    
-
-    cout << endl;
+    
     return 0;
 }
 
