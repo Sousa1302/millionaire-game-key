@@ -30,11 +30,14 @@ void GerarChavesEstrelas(){
         // se Num_12 nao esta presente no vetor Chaves_12
         if (Num_Unico(Num_12, Chaves_12)) {
             Chaves_12.push_back(Num_12);
-            
-            // esta iteragindo com o elemento do vetor Chaves_12 num indice especifico neste caso o Times_printed_12, se times_printed_12 = 0 o valor gerado sera atribuido á gaveta 0
-            cout << Chaves_12[Times_printed_12] << " ";
             Times_printed_12++;
         }
+    }
+
+    sort (Chaves_12.begin(), Chaves_12.end());
+
+    for (int i = 0; i < Chaves_12.size(); i++){
+        cout << Chaves_12[i] << " ";
     }
 
     cout << "\n";
@@ -44,9 +47,14 @@ void GerarChavesEstrelas(){
         Num_50 = 1 + (rand() % 50);
         if (Num_Unico(Num_50, Chaves_50)) {
             Chaves_50.push_back(Num_50);
-            cout << Chaves_50[Times_printed_50] << " ";
             Times_printed_50++;
         }
+    }
+    // funcao para ordenar os numeros dentro do vetor por ordem crescente do inicio ao fim do vetor
+    sort (Chaves_50.begin(), Chaves_50.end());
+
+    for (int x = 0; x < Chaves_50.size(); x ++){
+        cout << Chaves_50[x] << " ";
     }
 }
 
