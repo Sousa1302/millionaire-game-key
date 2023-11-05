@@ -20,28 +20,88 @@ void Iniciador_Gerador(){                               // Vai gerar um numero q
 }                                                       // manda de volta um intervalo de tempo desde uma "epoca" , usado para que o numero seja sempre diferente
 
 int Gerador_Num(int max_value){                         // O intervalo anterior utiliza-se nesta funcao 
-    return rand() % max_value + 1;                      // O numero aleatorio estara entre 1 e o valor da variavel "max_value" (valor flexivel)
-}
+    static int seed = 1;                                // seed Inicial ; Utiliza-se static para que o valor se mantenha durante o chamamento de outras funções 
+    seed = (seed * 32719 + 3) % 32749;                  // Calculo utilizado para gerar um novo valor para a variavel seed;  32749 é um valor grande que ajuda a espalhar os bits e aumentar a aleatoriedade
+    return rand() % max_value + 1;                      // O numero aleatorio estara entre 1 e o valor da variavel "max_value" (valor flexivel)                                                  
+}                                                       
 
+void BubbleSort(int arr[], int size) {                  // Algoritmo para ordenar numeros dentro de arrays
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
 
 void Gerar_Chaves_Estrelas(){                           // Funcao cujo objetivo é gerar as chaves e estrelas 
 
-    cout << "Estrelas: ";
-    for ( int i = 0; i < 2; i++){                       // i = 0, ou seja ele vai comecar a escolher um valor dentro do array na linha 0 e depois faz o mesmo na linha 1
-        int linha = i;
-        int coluna = Gerador_Num(5);                    // vai escolher um intervalo de 0 a 5 (coluna) e depois esse valor escolhido sera uma estrela 
-        int numero = Estrelas[linha][coluna - 1];       // vai escolher um valor especifico no array bidimensional Estrelas com base nos valores das variaveis linha e coluna -1
-        cout << numero << " ";                          // Utiliza-se [coluna - 1] porque os numeros do array n começam em 0 e sim 1 , assim a coluna comeca no local correto que sera na gaveta 0
-    }                                                   
+    int stars[2];                                       // Arrays criados para armazenar os numeros que serao atribuidos as estrelas e as chaves
+    int keys[5];
 
+    cout << "Estrelas: ";
+    bool Padroes_Estrelas_Disponiveis = false;          // Variavel usada para rastrear se ainda existem algumas estrelas disponiveis
+
+    for ( int i = 0; i < 2; i++){                       // i = 0, ou seja ele vai comecar a escolher um valor dentro do array na linha 0 e depois faz o mesmo na linha 1
+        int linha, coluna;
+        Padroes_Estrelas_Disponiveis = false;           // Reinicializa a flag para as estrelas disponiveis ou seja pode voltar a usar os mesmo numeros que anteriormente
+        for(int tries = 0;tries < 100;tries ++){        // Até 100 tentativas para achar uma estrela disponivel e assim nao ficar num loop infinito
+            linha = Gerador_Num(2) - 1;
+            coluna = Gerador_Num(6) - 1;
+            if (Estrelas[linha][coluna] != 0){          // Verifica se a estrela na posicao [linha][coluna] não é igual a zero, oq significa que ela está disponivel
+                Padroes_Estrelas_Disponiveis = true;    // Se uma estrela estiver disponivel é defenida como true a variavel
+                break;
+            }
+        }                                               
+
+        if (!Padroes_Estrelas_Disponiveis){             // Verifica se nenhuma estrela disponivel foi encontrada depois de 100 tentativas
+            cout << "Não há mais estrelas disponiveis!\n";
+            break;
+        }
+
+        stars[i] = Estrelas[linha][coluna];             // A estrela selecionada anteriormente é atribuida na gaveta cujo valor i tem
+        Estrelas[linha][coluna] = 0;                    // depois de escolhida a estrela esta é atribuida á gaveta 0 do array ou seja nao estara disponivel para ser escolhida uma segunda vez
+    }                                                   
+    BubbleSort(stars, 2);
+
+    cout << "Estrelas ordenadas: ";
+    for (int i = 0; i < 2; i++) {
+        cout << stars[i] << " ";
+}
+    
     cout << endl;
 
     cout << "Chaves: ";
+    bool Padroes_Chaves_Disponiveis = false;            // Variavel usada para rastrear se ainda existem algumas chaves disponiveis
     for ( int i = 0; i < 5; i++){
-        int linha = Gerador_Num(4);                     // vai escolher uma linha de 0 a 4
-        int coluna =  Gerador_Num(9);                   // vai escolher um valor dentro da linha defenida anteriormente , no qual sera um valor entre os intervalos 0 a 9
-        int numero = Chaves[linha - 1][coluna -1];      // subtraimos -1 a linha e coluna pq as linhas comecamos a contar do zero e as colunas igualmente, assim ele acessa os valores todos
-        cout << numero << " ";
+        int linha, coluna;
+        
+        for (int tries = 0; tries < 100; tries ++) {    // Até 100 tentativas para achar uma chave disponivel e assim nao ficar num loop infinito
+            linha = Gerador_Num(5) - 1;                 // 5 porque é o numero de linhas nos vetores bidimensionais ; -1 porque começamos a contar do 0
+            coluna = Gerador_Num(10) -1;                // 10 porque é o numero de colunas nos vetores bidimensionais; -1 porque começamos a contar do 0
+            if (Chaves[linha][coluna] != 0){            // Verifica se a chave na posicao [linha][coluna] não é igual a zero, oq significa que ela está disponivel
+                Padroes_Chaves_Disponiveis = true;      // Se uma chave estiver disponivel é defenida como true a variavel
+                break;
+            }                
+        }         
+
+        if (!Padroes_Chaves_Disponiveis){               // Verifica se nenhuma chave disponivel foi encontrada depois de 100 tentativas
+            cout << "Nao há mais chaves disponiveis!\n";
+            break;
+        }                                      
+
+        keys[i] = Chaves[linha][coluna];                // A chave selecionada anteriormente é atribuida na gaveta cujo valor i tem
+        Chaves[linha][coluna] = 0;                      // depois de escolhida a chave esta é atribuida á gaveta 0 do array ou seja nao estara disponivel para ser escolhida uma segunda vez
+                              
+    }
+    BubbleSort(keys, 5);
+
+    cout << "Chaves ordenadas: ";
+    for (int i = 0; i < 5; i++) {
+        cout << keys[i] << " ";
     }
     cout << endl;
 }
@@ -55,13 +115,10 @@ int main(){
     cout << "Desejas gerar mais um novo conjunto? \n[1]-> YES \n[2]-> NO \n";
     cin >> Another_Group;
     
-    if (Another_Group == 2){
+    if (Another_Group == 2 || Another_Group > 2){
         Continuar_a_gerar = false;
         }
     }
     return 0;
 }
 
-
-
-// FALTA IMPLEMENTAR PARA QUE O NUMERO NAO SEJA REPETIDO E A ORDENACAO DO MESMO!
